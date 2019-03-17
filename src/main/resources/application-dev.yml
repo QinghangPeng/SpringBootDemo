@@ -1,0 +1,40 @@
+#spring:
+#  application:
+#    name: remote-service
+#  datasource:
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://172.16.40.2:3306/voms
+#    username: root
+#    password: voms
+#  data:
+#    solr:
+#      host: http://172.16.40.113:8983/solr
+#
+#remote:
+#  service:
+#    tboxIdFiled: v_device_sn
+#    cmdResponseTimeout: 30000
+#    allowTimeout: ${is_allow_timeout:true}
+#    kafka:
+#      topic: remote
+#      producer:
+#         topic: remote_up
+#         bootstrap.servers: ${kafka_servers:172.16.40.113:9092}
+#         key.serializer: org.apache.kafka.common.serialization.StringSerializer
+#         value.serializer: org.apache.kafka.common.serialization.StringSerializer
+#      consumer:
+#         topic: remote_down
+#         bootstrap.servers: ${kafka_servers:172.16.40.113:9092}
+#         group.id: remote4
+#         enable.auto.commit: true
+#         auto.commit.interval.ms: 3000
+#         session.timeout.ms: 30000
+#         key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#         value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#         max.poll.records: 50
+#         auto.offset.reset: earliest
+
+logging:
+  level:
+    root: info
+

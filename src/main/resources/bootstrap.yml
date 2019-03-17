@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: remote-service
+  profiles:
+    active: dev
+server:
+  port: ${server-port:9001}
+#  tomcat:
+#    accesslog:
+#      enabled: true
+#      basedir: /logs
+#      pattern: '%h %l %u %t "%r" %s %b %D'
+#      prefix: access_log
+#      directory: /logs
