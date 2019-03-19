@@ -6,6 +6,7 @@ import com.example.demo.vo.Page;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.Map;
 /**
  * Created by xiezhouyan on 17-3-16.
  */
+
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Response implements Serializable {
 
     private static final long serialVersionUID = -6602365878131231511L;
