@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.google.common.base.Predicates;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @SpringBootApplication
 @EnableScheduling
 @ComponentScan
+@MapperScan(basePackageClasses = DemoApplication.class)
 public class DemoApplication {
 
     public static void main(String[] args) {
@@ -37,12 +39,12 @@ public class DemoApplication {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("Swagger-2.0")
-                .contact(new Contact("jackSon","","15756290191@163.com"))
-                .description("This is a api document by Swagger_2")
+                .contact(new Contact("jackSon","","voyagejk.peng@gmail.com"))
+                /*.description("This is a api document by Swagger_2")
                 .termsOfServiceUrl("No terms of service")
                 .license("The Apache License, Version 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("v1.0")
+                .version("v1.0")*/
                 .build();
     }
 }
