@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.Response;
+import com.example.demo.service.KafkaService;
 import com.example.demo.service.MysqlService;
 import com.example.demo.vo.Page;
+import com.example.demo.vo.Vehicle;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ public class SwaggerController {
 
     @Autowired
     private MysqlService mysqlService;
+
+    @Autowired
+    private KafkaService kafkaService;
 
     @ApiOperation(value = "sayHello")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
@@ -33,6 +38,13 @@ public class SwaggerController {
                                    /*@PathVariable("触发器组") String triggerGroup*/
                                    /*@ApiIgnore Page page*/) {
         return Response.success(mysqlService.getTriggerName(triggerGroup));
+    }
+
+    @ApiOperation(value = "kafka")
+    @RequestMapping(value = "/basicKafkaInfo", method = RequestMethod.POST)
+    public Response testKafka(@RequestBody Vehicle vehicle) {
+        kafkaService.sendVehInfo("test_topic",vehicle);
+        return Response.success();
     }
 
 }

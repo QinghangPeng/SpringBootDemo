@@ -1,7 +1,7 @@
 package com.example.demo.model.Flyweight_Pattern;
 
 /**
- * @ClassName Client
+ * @ClassName 享元模式
  * @Description
  * @Author jackson
  * @Date 2019/4/4 15:35

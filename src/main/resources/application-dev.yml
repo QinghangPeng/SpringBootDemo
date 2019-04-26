@@ -5,6 +5,17 @@ spring:
     password: ${mysql_password:123456}
     driver-class-name: com.mysql.jdbc.Driver
 
+# kafka的配置
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: consumer1
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
 # mongo的配置
   data:
     mongodb:
