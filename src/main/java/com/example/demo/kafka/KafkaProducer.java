@@ -5,7 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName KafkaProducer
@@ -25,7 +30,12 @@ public class KafkaProducer {
 
     public void send(String topic,Object object) {
         try{
-            producer.send(topic,objectMapper.writeValueAsString(object));
+            Map map = new HashMap<>();
+            map.put(KafkaHeaders.TOPIC,topic);
+            map.put(KafkaHeaders.PARTITION_ID,4);
+            map.put(KafkaHeaders.TIMESTAMP,System.currentTimeMillis());
+
+            producer.send(new GenericMessage<>(objectMapper.writeValueAsString(object),map));
         } catch(Exception e) {
             logger.error("send error:{}",e);
         }

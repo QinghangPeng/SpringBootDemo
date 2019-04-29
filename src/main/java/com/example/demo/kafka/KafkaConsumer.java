@@ -3,6 +3,7 @@ package com.example.demo.kafka;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -21,7 +22,7 @@ public class KafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(id = "partion1",topics = "test_topic",groupId = "consumer1")
+    @KafkaListener(id = "partion1",groupId = "consumer1",topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})})
     public void getInfo1(@Payload String record,
                          /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
@@ -38,7 +39,7 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(id = "partion2",topics = "test_topic",groupId = "consumer1")
+    @KafkaListener(id = "partion2",groupId = "consumer1",topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"0","1","4"})})
     public void getInfo2(@Payload String record,
                          /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
