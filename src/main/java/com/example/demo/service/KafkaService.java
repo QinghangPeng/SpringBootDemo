@@ -19,7 +19,10 @@ public class KafkaService {
     private KafkaProducer producer;
 
     public void sendVehInfo(String topic, Vehicle vehicle) {
-        producer.send(topic,vehicle);
+        for (int i=0;i<1000;i++) {
+            vehicle.setVin(vehicle.getVin() + i);
+            producer.send(topic,vehicle);
+        }
     }
 
 }

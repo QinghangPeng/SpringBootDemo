@@ -22,9 +22,9 @@ public class KafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(id = "partion1",groupId = "consumer1",/*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})}*/topics = "test_topic")
+    /*@KafkaListener(groupId = "consumer1",*//*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})}*//*topics = "test_topic")
     public void getInfo1(@Payload String record,
-                         /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
+                         *//*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*//*
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
                          @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
                          @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts) {
@@ -37,11 +37,11 @@ public class KafkaConsumer {
         } catch(Exception e) {
             logger.error("getInfo error:{}",e);
         }
-    }
+    }*/
 
-    @KafkaListener(id = "partion2",groupId = "consumer1",/*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"0","1","4"})}*/topics = "test_topic")
+    /*@KafkaListener(id = "partion2",groupId = "consumer1",*//*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"0","1","4"})}*//*topics = "test_topic")
     public void getInfo2(@Payload String record,
-                         /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
+                         *//*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*//*
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
                          @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
                          @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts) {
@@ -54,7 +54,7 @@ public class KafkaConsumer {
         } catch(Exception e) {
             logger.error("getInfo error:{}",e);
         }
-    }
+    }*/
 
     @KafkaListener(id = "partion3",topics = "test_consumerconfig_topic",containerFactory = "testListenerContainerFactory")
     public void testConsumerConfig(@Payload String record,
@@ -67,7 +67,8 @@ public class KafkaConsumer {
                     "data : "+record+"\n"+
                     "partitionId : "+partition+"\n"+
                     "topic : "+topic+"\n"+
-                    "timestamp : "+ts+"\n");
+                    "timestamp : "+ts+"\n" +
+                    "thredName :" + Thread.currentThread().getName() + "\n");
         } catch(Exception e) {
             logger.error("getInfo error:{}",e);
         }

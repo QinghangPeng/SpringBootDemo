@@ -41,6 +41,10 @@ public class KafkaConsumersConfig {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         /*factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL);*/
         factory.setConsumerFactory(vehStatusConsumerFactory(testGroupId));
+        /**
+         *  实现多分区，多线程消费
+         */
+        factory.setConcurrency(3);
         return factory;
     }
 
