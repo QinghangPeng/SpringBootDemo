@@ -55,4 +55,21 @@ public class KafkaConsumer {
             logger.error("getInfo error:{}",e);
         }
     }
+
+    @KafkaListener(id = "partion3",topics = "test_consumerconfig_topic",containerFactory = "testListenerContainerFactory")
+    public void testConsumerConfig(@Payload String record,
+            /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
+                                   @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
+                                   @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+                                   @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts) {
+        try{
+            logger.info("partion3 receive : \n"+
+                    "data : "+record+"\n"+
+                    "partitionId : "+partition+"\n"+
+                    "topic : "+topic+"\n"+
+                    "timestamp : "+ts+"\n");
+        } catch(Exception e) {
+            logger.error("getInfo error:{}",e);
+        }
+    }
 }

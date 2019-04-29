@@ -44,6 +44,8 @@ es:
   elasticsearch:
     clusterNodes: ${es_nodes:http://127.0.0.1:9200}
 
+kafkaConsumers:
+  testGroupId: consumer2
 
 
 logging:
