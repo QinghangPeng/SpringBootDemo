@@ -22,7 +22,7 @@ public class KafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(id = "partion1",groupId = "consumer1",topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})})
+    @KafkaListener(id = "partion1",groupId = "consumer1",/*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})}*/topics = "test_topic")
     public void getInfo1(@Payload String record,
                          /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
@@ -39,7 +39,7 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(id = "partion2",groupId = "consumer1",topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"0","1","4"})})
+    @KafkaListener(id = "partion2",groupId = "consumer1",/*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"0","1","4"})}*/topics = "test_topic")
     public void getInfo2(@Payload String record,
                          /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
                          @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,

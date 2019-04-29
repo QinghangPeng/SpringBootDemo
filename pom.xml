@@ -99,6 +99,12 @@
             <version>2.1.12.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.37</version>
+        </dependency>
+
         <!-- 优先加载bootstrap文件，需要配置spring-cloud的context -->
         <!--<dependency>
             <groupId>org.springframework.cloud</groupId>

@@ -32,7 +32,7 @@ public class KafkaProducer {
         try{
             Map map = new HashMap<>();
             map.put(KafkaHeaders.TOPIC,topic);
-            map.put(KafkaHeaders.PARTITION_ID,4);
+//            map.put(KafkaHeaders.PARTITION_ID,4);
             map.put(KafkaHeaders.TIMESTAMP,System.currentTimeMillis());
 
             producer.send(new GenericMessage<>(objectMapper.writeValueAsString(object),map));
