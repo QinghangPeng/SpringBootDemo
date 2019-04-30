@@ -28,9 +28,8 @@ public class KafkaConsumersConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${kafkaConsumers.testGroupId}")
+    @Value("${tpd.kafkaConsumers.testGroupId}")
     private String testGroupId;
-
 
     /**
      *  特定消费者

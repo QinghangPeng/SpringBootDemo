@@ -1,11 +1,13 @@
 package com.example.demo.config;
 
 import com.example.demo.kafka.CustomerPatitioner;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.internals.DefaultPartitioner;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +32,12 @@ public class KafkaConfig {
     @Autowired
     private KafkaProperties properties;
 
+    @Value("${tpd.topicName}")
+    private String topicName;
+
+    @Value("${tpd.numPartitions}")
+    private Integer numPartitions;
+
     @Bean
     public Map<String,Object> producerConfigs() {
         Map<String,Object> props = new HashMap<>(properties.buildProducerProperties());
@@ -49,4 +57,8 @@ public class KafkaConfig {
         return new KafkaTemplate<>(producerFactory());
     }
 
+    @Bean
+    public NewTopic testPartitionTopic() {
+        return new NewTopic(topicName,numPartitions,(short) 1);
+    }
 }

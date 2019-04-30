@@ -22,6 +22,24 @@ public class KafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
+    @KafkaListener(id = "partion4",topics = "test_partition_topic",containerFactory = "testListenerContainerFactory")
+    public void testConsumerConfig(@Payload String record,
+            /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
+                                   @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
+                                   @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+                                   @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts) {
+        try{
+            logger.info("partion4 receive : \n"+
+                    "data : "+record+"\n"+
+                    "partitionId : "+partition+"\n"+
+                    "topic : "+topic+"\n"+
+                    "timestamp : "+ts+"\n" +
+                    "thredName :" + Thread.currentThread().getName() + "\n");
+        } catch(Exception e) {
+            logger.error("getInfo error:{}",e);
+        }
+    }
+
     /*@KafkaListener(groupId = "consumer1",*//*topicPartitions = {@TopicPartition(topic = "test_topic",partitions = {"2","3"})}*//*topics = "test_topic")
     public void getInfo1(@Payload String record,
                          *//*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*//*
@@ -55,22 +73,4 @@ public class KafkaConsumer {
             logger.error("getInfo error:{}",e);
         }
     }*/
-
-    @KafkaListener(id = "partion3",topics = "test_consumerconfig_topic",containerFactory = "testListenerContainerFactory")
-    public void testConsumerConfig(@Payload String record,
-            /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
-                                   @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,
-                                   @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
-                                   @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts) {
-        try{
-            logger.info("partion3 receive : \n"+
-                    "data : "+record+"\n"+
-                    "partitionId : "+partition+"\n"+
-                    "topic : "+topic+"\n"+
-                    "timestamp : "+ts+"\n" +
-                    "thredName :" + Thread.currentThread().getName() + "\n");
-        } catch(Exception e) {
-            logger.error("getInfo error:{}",e);
-        }
-    }
 }
