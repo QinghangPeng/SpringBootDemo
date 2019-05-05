@@ -105,6 +105,12 @@
             <version>1.2.37</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>1.1.2-beta5</version>
+        </dependency>
+
         <!-- 优先加载bootstrap文件，需要配置spring-cloud的context -->
         <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
