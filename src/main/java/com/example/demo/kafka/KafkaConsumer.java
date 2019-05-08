@@ -22,7 +22,7 @@ public class KafkaConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(id = "partion4",topics = "test_partition_topic",containerFactory = "testListenerContainerFactory")
+    @KafkaListener(id = "partion4",topics = "test_partition_topics",containerFactory = "testListenerContainerFactory")
     public void testConsumerConfig(@Payload String record,
             /*@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,*/
                                    @Header(KafkaHeaders.RECEIVED_PARTITION_ID) Integer partition,

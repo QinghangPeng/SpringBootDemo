@@ -46,10 +46,10 @@ es:
 
 #kafka的一些自定义配置
 tpd:
-  topicName: test_partition_topic
-  numPartitions: 6
+  topicName: test_partition_topics
+  numPartitions: 14
   kafkaConsumers:
-    testGroupId: consumer2
+    testGroupId: consumer3
 
 
 

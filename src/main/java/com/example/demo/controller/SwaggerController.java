@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.example.demo.Response;
 import com.example.demo.model.excel_model.VehicleEx;
 import com.example.demo.service.KafkaService;
@@ -8,11 +11,13 @@ import com.example.demo.util.ExcelExportUtil;
 import com.example.demo.vo.Vehicle;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,13 +62,27 @@ public class SwaggerController {
     @RequestMapping(value = "/writeExcel", method = RequestMethod.GET)
     public void writeExcel(@ApiIgnore HttpServletResponse response) throws IOException {
         List<VehicleEx> list = new ArrayList<>();
-        for (int i=0;i<5;i++) {
-            VehicleEx vehicle = new VehicleEx("vin1"+i,"deviceId1"+i,"牵引"+i,"4*2"+i,"J6P"+i,"460Ps"+i);
-            list.add(vehicle);
-        }
         String title = "车辆基本信息表";
         String sheetName = "车辆基本信息";
-        ExcelExportUtil.writeExcel(response,list,title,sheetName,VehicleEx.class);
+        /*ExcelExportUtil.writeExcel(response,list,title,sheetName,VehicleEx.class);*/
+        String fileName = URLEncoder.encode(title, "UTF-8");
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("content-disposition", "attachment;filename=" + fileName + ".xls");
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        ExcelWriter writer = new ExcelWriter(response.getOutputStream(),ExcelTypeEnum.XLS);
+        Sheet sheet = new Sheet(1,0,VehicleEx.class);
+        sheet.setSheetName(sheetName);
+        int count = 1;
+        while (count < 10) {
+            for (int i=0;i<5;i++) {
+                VehicleEx vehicle = new VehicleEx("vin1"+i,"deviceId1"+i,"牵引"+i,"4*2"+i,"J6P"+i,"460Ps"+i);
+                list.add(vehicle);
+            }
+            writer.write(list,sheet);
+            sheet.setStartRow(5*count);
+            count++;
+        }
+        writer.finish();
     }
 
     @ApiOperation(value = "导出多个sheet的excel")
