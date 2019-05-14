@@ -53,7 +53,7 @@ public class SwaggerController {
 
     @ApiOperation(value = "kafka")
     @RequestMapping(value = "/basicKafkaInfo/{topic}", method = RequestMethod.POST)
-    public Response testKafka(@RequestBody Vehicle vehicle, @PathVariable String topic) {
+    public Response testKafka(@RequestBody Vehicle vehicle, @PathVariable String topic) throws Exception{
         kafkaService.sendVehInfo(topic,vehicle);
         return Response.success();
     }

@@ -13,8 +13,8 @@ import java.util.Date;
 public class ScheduledTest {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTest.class);
 
-    @PostConstruct
-    @Scheduled(cron = "0 0/1 * * * ?")
+//    @PostConstruct
+//    @Scheduled(cron = "0 0/1 * * * ?")
     public void pushDataToRedis() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

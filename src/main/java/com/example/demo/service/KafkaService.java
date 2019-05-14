@@ -18,10 +18,15 @@ public class KafkaService {
     @Autowired
     private KafkaProducer producer;
 
-    public void sendVehInfo(String topic, Vehicle vehicle) {
-        for (int i=0;i<1000;i++) {
-            vehicle.setVin(vehicle.getVin() + i);
+    public void sendVehInfo(String topic, Vehicle vehicle) throws Exception{
+        int i = 1;
+        String vin = "ph_tboxId";
+        while (true) {
+            vehicle.setVin(vin + i%5);
+            vehicle.setTboxId(vin+i);
             producer.send(topic,vehicle);
+            i++;
+//            Thread.sleep(3000L);
         }
     }
 

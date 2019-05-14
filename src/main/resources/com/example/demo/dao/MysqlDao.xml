@@ -8,4 +8,14 @@
         where TRIGGER_GROUP = #{triggerGroup}
     </select>
 
+    <resultMap id="locksInfo" type="com.example.demo.vo.Qrtzlocks">
+        <result column="SCHED_NAME" property="schedName" jdbcType="VARCHAR" />
+        <result column="LOCK_NAME" property="lockName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getQrtzLocks" resultMap="locksInfo">
+        select SCHED_NAME,LOCK_NAME
+        from qrtz_locks
+    </select>
+
 </mapper>

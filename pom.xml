@@ -111,6 +111,12 @@
             <version>1.1.2-beta5</version>
         </dependency>
 
+        <!-- 由于集成了redis作为缓存中间件，因此这里不用再配置该依赖 -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>-->
+
         <!-- 优先加载bootstrap文件，需要配置spring-cloud的context -->
         <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
