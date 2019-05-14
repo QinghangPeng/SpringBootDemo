@@ -19,7 +19,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EnableScheduling
 @ComponentScan
 @MapperScan(basePackageClasses = DemoApplication.class)
-@EnableCaching
+//@EnableCaching
 public class DemoApplication {
 
     public static void main(String[] args) {
