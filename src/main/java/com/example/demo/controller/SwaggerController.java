@@ -6,6 +6,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.example.demo.Response;
 import com.example.demo.model.excel_model.VehicleEx;
 import com.example.demo.service.KafkaService;
+import com.example.demo.service.MongoService;
 import com.example.demo.service.MysqlService;
 import com.example.demo.util.ExcelExportUtil;
 import com.example.demo.vo.Vehicle;
@@ -30,6 +31,9 @@ public class SwaggerController {
 
     @Autowired
     private KafkaService kafkaService;
+
+    @Autowired
+    private MongoService mongoService;
 
     @ApiOperation(value = "sayHello")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
@@ -101,6 +105,12 @@ public class SwaggerController {
                 .write(list,sheetName2,VehicleEx.class)
                 .write(list,sheetName3,VehicleEx.class)
                 .finish();
+    }
+
+    @ApiOperation(value = "mongo")
+    @RequestMapping(value = "/basicMongoInfo", method = RequestMethod.GET)
+    public Response basicMongoInfo(@ApiParam("查询车辆数") @RequestParam Integer pageSize) {
+        return Response.success(mongoService.basicMongoInfo(pageSize));
     }
 
 }

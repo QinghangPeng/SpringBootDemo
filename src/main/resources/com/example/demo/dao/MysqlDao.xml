@@ -18,4 +18,10 @@
         from qrtz_locks
     </select>
 
+    <select id="getAllVin" resultType="java.lang.String">
+        select vin
+        from qm_vehicle_info
+        limit #{pageSize}
+    </select>
+
 </mapper>

@@ -13,4 +13,6 @@ public interface MysqlDao {
 
     List<Qrtzlocks> getQrtzLocks();
 
+    List<String> getAllVin(@Param("pageSize") Integer pageSize);
+
 }

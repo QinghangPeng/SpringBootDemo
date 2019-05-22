@@ -29,4 +29,12 @@ public class Qrtzlocks implements Serializable {
     public void setLockName(String lockName) {
         this.lockName = lockName;
     }
+
+    @Override
+    public String toString() {
+        return "Qrtzlocks{" +
+                "schedName='" + schedName + '\'' +
+                ", lockName='" + lockName + '\'' +
+                '}';
+    }
 }
