@@ -1,5 +1,6 @@
 package com.example.demo.model.strategy_pattern;
 
+import com.example.demo.model.strategy_pattern.utils.ClassScaner;
 import com.google.common.collect.Maps;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

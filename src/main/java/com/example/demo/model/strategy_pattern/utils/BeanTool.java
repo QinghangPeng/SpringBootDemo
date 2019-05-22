@@ -1,4 +1,4 @@
-package com.example.demo.model.strategy_pattern;
+package com.example.demo.model.strategy_pattern.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

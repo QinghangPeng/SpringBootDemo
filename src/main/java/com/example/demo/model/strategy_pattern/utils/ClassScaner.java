@@ -1,4 +1,4 @@
-package com.example.demo.model.strategy_pattern;
+package com.example.demo.model.strategy_pattern.utils;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
