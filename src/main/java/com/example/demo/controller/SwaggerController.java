@@ -5,10 +5,13 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.example.demo.Response;
 import com.example.demo.model.excel_model.VehicleEx;
+import com.example.demo.model.strategy_pattern.IOrderService;
+import com.example.demo.model.strategy_pattern.impl.OrderServiceImpl;
 import com.example.demo.service.KafkaService;
 import com.example.demo.service.MongoService;
 import com.example.demo.service.MysqlService;
 import com.example.demo.util.ExcelExportUtil;
+import com.example.demo.vo.OrderDTO;
 import com.example.demo.vo.Vehicle;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class SwaggerController {
 
     @Autowired
     private MongoService mongoService;
+
+    @Autowired
+    private OrderServiceImpl orderService;
 
     @ApiOperation(value = "sayHello")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
@@ -111,6 +117,12 @@ public class SwaggerController {
     @RequestMapping(value = "/basicMongoInfo", method = RequestMethod.GET)
     public Response basicMongoInfo(@ApiParam("查询车辆数") @RequestParam Integer pageSize) {
         return Response.success(mongoService.basicMongoInfo(pageSize));
+    }
+
+    @ApiOperation(value = "测试策略模式")
+    @RequestMapping(value = "/testStrategy",method = RequestMethod.POST)
+    public Response testStrategy(@RequestBody OrderDTO dto) {
+        return Response.success(orderService.handle(dto));
     }
 
 }
