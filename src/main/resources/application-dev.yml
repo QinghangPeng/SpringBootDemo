@@ -5,6 +5,35 @@ spring:
     password: ${mysql_password:123456}
     driver-class-name: com.mysql.jdbc.Driver
 
+# kafka的配置
+  kafka:
+    bootstrap-servers: localhost:9092
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: consumer1
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+# mongo的配置
+  data:
+    mongodb:
+      uri: mongodb://${mongo_username:rwuser}:${mongo_passwd:JF_xsda_2018}@${mongo_host:10.60.252.4}:${mongo_port:8635}/${mongo_db:faw-sales}?authSource=${auth_db:admin}
+#      username: ${mongo_username:rwuser}
+#      password: ${mongo_passwd:JF_xsda_2018}
+#      host: ${mongo_host:10.60.252.4}
+#      port: ${mongo_port:8635}
+#      database: ${mongo_db:faw-sales}
+#      authentication-database: ${auth_db:admin}
+
+# redis的配置
+  redis:
+    host: ${redis_host:localhost}
+    port: ${redis_port:6379}
+    database: ${redis_db:3}
+    password: ${redis_password:123456}
+
 
 # mybatis 配置
 mybatis:
@@ -14,6 +43,13 @@ mybatis:
 es:
   elasticsearch:
     clusterNodes: ${es_nodes:http://127.0.0.1:9200}
+
+#kafka的一些自定义配置
+tpd:
+  topicName: test_partition_topics
+  numPartitions: 14
+  kafkaConsumers:
+    testGroupId: consumer3
 
 
 
