@@ -19,12 +19,12 @@ spring:
 # mongo的配置
   data:
     mongodb:
-      uri: mongodb://${mongo_username:rwuser}:${mongo_passwd:JF_xsda_2018}@${mongo_host:10.60.252.4}:${mongo_port:8635}/${mongo_db:faw-sales}?authSource=${auth_db:admin}
-#      username: ${mongo_username:rwuser}
+      uri: mongodb://${mongo_username:root}:${mongo_passwd:JF_xsda_2018}@${mongo_host:localhost}:${mongo_port:8635}/${mongo_db:test}?authSource=${auth_db:admin}
+#      username: ${mongo_username:root}
 #      password: ${mongo_passwd:JF_xsda_2018}
-#      host: ${mongo_host:10.60.252.4}
+#      host: ${mongo_host:localhost}
 #      port: ${mongo_port:8635}
-#      database: ${mongo_db:faw-sales}
+#      database: ${mongo_db:test}
 #      authentication-database: ${auth_db:admin}
 
 # redis的配置
