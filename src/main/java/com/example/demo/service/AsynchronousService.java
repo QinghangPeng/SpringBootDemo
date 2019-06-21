@@ -1,11 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.vo.Vehicle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * @ClassName AsynchronousService
@@ -40,7 +46,7 @@ public class AsynchronousService {
     public String getName() {
         log.info("=======================进入方法");
         printSomething();
-        printSomething2();
+        diffFromCallAndRun();
         log.info("=======================离开方法");
         return "name";
     }
@@ -58,16 +64,52 @@ public class AsynchronousService {
         });
     }
 
-    public void printSomething2() {
+    public void diffFromCallAndRun() {
+        /**
+         *  Runnable 接口，无返回值,不使用Future接收
+         */
         taskExecutor.submit(() -> {
-            try{
-                for (int i=0;i<=100;i++) {
+            try {
+                for (int i = 0; i <= 10; i++) {
                     log.info(Thread.currentThread().getName() + "----------------异步2：>" + i);
                     Thread.sleep(1000);
                 }
-            } catch(Exception e) {
-                log.error("there is something wrong:{}",e);
+            } catch (Exception e) {
+                log.error("there is something wrong:{}", e);
             }
         });
+
+        //当然  线程多的时候可以用list，然后循环取值，单线程可以省略
+        List<Future> futures = new ArrayList<>();
+
+        Future<?> infoFuture = taskExecutor.submit(() ->
+                log.info("====================this is a test for runnable with future class===============")
+        );
+        futures.add(infoFuture);
+        for (Future future : futures) {
+            try{
+                future.get();
+            } catch(Exception e) {
+                log.error("test for runnable with future class error:{}",e);
+            }
+        }
+
+        /**
+         *  Callable接口，有返回值
+         *  可以和Future联合使用
+         */
+        try{
+            Future<Vehicle> vehicleFuture = taskExecutor.submit(() -> {
+                Vehicle vehicle = new Vehicle();
+                vehicle.setVin("vin");
+                vehicle.setTboxId("tboxId");
+                vehicle.setName("name");
+                return vehicle;
+            });
+            Vehicle v = vehicleFuture.get();
+            log.info("vehicle info:{}",v.toString());
+        } catch(Exception e) {
+            log.error("callable error:{}",e);
+        }
     }
 }
