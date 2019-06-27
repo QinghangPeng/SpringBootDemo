@@ -49,4 +49,12 @@ public class AsynchronousController {
         return Response.success(list);
     }
 
+    @ApiOperation(value = "多线程Callable和Runable接口的不同")
+    @RequestMapping(value = "diffRunAndCall",method = RequestMethod.GET)
+    public Response diffRunAndCall() {
+        service.diffFromCallAndRun();
+        log.info("=========>" + Thread.currentThread().getName());
+        return Response.success();
+    }
+
 }

@@ -5,6 +5,7 @@ import com.example.demo.model.strategy_pattern.HandlerContext;
 import com.example.demo.model.strategy_pattern.IOrderService;
 import com.example.demo.vo.OrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  **/
 @Service
+@Qualifier("orderServiceImpl")
 public class OrderServiceImpl implements IOrderService {
 
     @Autowired

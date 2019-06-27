@@ -8,7 +8,10 @@ import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @ClassName MongoDao
@@ -56,6 +61,55 @@ public class MongoDao {
         }
         System.out.println("================================"+list.size());
         return null;
+    }
+
+    /**
+     *  聚合查询简版 查询的原生语句为
+     *  {
+     *      "$match":{
+     *           vin：vin,
+     *           time:{
+     *               "$gte":fromTime,
+     *               "$lte":toTime
+     *           }
+     *          "$and":[
+     *              {"$or":[
+     *                  {on:1},{off:1},{up:1},{down:1}
+     *              ]}
+     *          ]
+     *      }
+     *  }
+     * @param vin
+     * @param fromTime
+     * @param toTime
+     * @return
+     */
+    public List<Map> searchInfoUseAgg(String vin,Long fromTime,Long toTime) {
+        Criteria criteria = Criteria.where("vin").is(vin)
+                .and("time").gte(fromTime).lte(toTime);
+
+        List<Criteria> orCriterias = new ArrayList<>();
+
+        /** or查询条件 */
+        String[] events = {"on","off","up","down"};
+        List<String> list = new ArrayList<>(Arrays.asList(events));
+        /** or查询条件 */
+
+        list.forEach(s -> orCriterias.add(Criteria.where(s).is(1)));
+
+        Criteria eleQuery = new Criteria();
+        eleQuery.orOperator(orCriterias.toArray(new Criteria[]{}));
+
+        criteria.andOperator(eleQuery);
+
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(criteria),
+                Aggregation.project(new String[]{"time","name","on","up","off","down"}),
+                Aggregation.sort(Sort.Direction.ASC,"time")
+        );
+
+        AggregationResults<Map> aggResults = mongoTemplate.aggregate(agg,"status_data",Map.class);
+        return aggResults.getMappedResults();
     }
 
     /**
@@ -195,4 +249,5 @@ public class MongoDao {
         }
         return null;
     }*/
+
 }

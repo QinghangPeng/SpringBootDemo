@@ -8,6 +8,9 @@ import com.example.demo.vo.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  用于判断进出区的java代码
+ */
 public class GeoUtil {
 
     /**
@@ -27,10 +30,14 @@ public class GeoUtil {
 
         int N = pts.size();
         boolean boundOrVertex = true;
-        int intersectCount = 0;//cross points count of x
-        double precision = 2e-10; //浮点类型计算时候与0比较时候的容差
-        Gps p1, p2;//neighbour bound vertices
-        Gps p = point; //测试点
+        //cross points count of x
+        int intersectCount = 0;
+        //浮点类型计算时候与0比较时候的容差
+        double precision = 2e-10;
+        //neighbour bound vertices
+        Gps p1, p2;
+        //测试点
+        Gps p = point;
 
         p1 = pts.get(0);
         for (int i = 0; i <= N; i++) {
@@ -44,45 +51,62 @@ public class GeoUtil {
                 continue;
             }
 
-            if (p.getLat() > Math.min(p1.getLat(), p2.getLat()) && p.getLat() < Math.max(p1.getLat(), p2.getLat())) {//ray is crossing over by the algorithm (common part of)
-                if (p.getLng() <= Math.max(p1.getLng(), p2.getLng())) {//x is before of ray
-                    if (p1.getLat() == p2.getLat() && p.getLng() >= Math.min(p1.getLng(), p2.getLng())) {//overlies on a horizontal ray
+            if (p.getLat() > Math.min(p1.getLat(), p2.getLat()) && p.getLat() < Math.max(p1.getLat(), p2.getLat())) {
+                //ray is crossing over by the algorithm (common part of)
+                if (p.getLng() <= Math.max(p1.getLng(), p2.getLng())) {
+                    //x is before of ray
+                    if (p1.getLat() == p2.getLat() && p.getLng() >= Math.min(p1.getLng(), p2.getLng())) {
+                        //overlies on a horizontal ray
                         return boundOrVertex;
                     }
 
-                    if (p1.getLng() == p2.getLng()) {//ray is vertical
-                        if (p1.getLng() == p.getLng()) {//overlies on a vertical ray
+                    if (p1.getLng() == p2.getLng()) {
+                        //ray is vertical
+                        if (p1.getLng() == p.getLng()) {
+                            //overlies on a vertical ray
                             return boundOrVertex;
-                        } else {//before ray
+                        } else {
+                            //before ray
                             ++intersectCount;
                         }
-                    } else {//cross point on the left side
-                        double xinters = (p.getLat() - p1.getLat()) * (p2.getLng() - p1.getLng()) / (p2.getLat() - p1.getLat()) + p1.getLng();//cross point of getLng()
-                        if (Math.abs(p.getLng() - xinters) < precision) {//overlies on a ray
+                    } else {
+                        //cross point on the left side
+                        //cross point of getLng()
+                        double xinters = (p.getLat() - p1.getLat()) * (p2.getLng() - p1.getLng()) / (p2.getLat() - p1.getLat()) + p1.getLng();
+                        if (Math.abs(p.getLng() - xinters) < precision) {
+                            //overlies on a ray
                             return boundOrVertex;
                         }
 
-                        if (p.getLng() < xinters) {//before ray
+                        if (p.getLng() < xinters) {
+                            //before ray
                             ++intersectCount;
                         }
                     }
                 }
-            } else {//special case when ray is crossing through the vertex
-                if (p.getLat() == p2.getLat() && p.getLng() <= p2.getLng()) {//p crossing over p2
-                    Gps p3 = pts.get((i + 1) % N); //next vertex
-                    if (p.getLat() >= Math.min(p1.getLat(), p3.getLat()) && p.getLat() <= Math.max(p1.getLat(), p3.getLat())) {//p.getLat() lies between p1.getLat() & p3.getLat()
+            } else {
+                //special case when ray is crossing through the vertex
+                if (p.getLat() == p2.getLat() && p.getLng() <= p2.getLng()) {
+                    //p crossing over p2
+                    //next vertex
+                    Gps p3 = pts.get((i + 1) % N);
+                    if (p.getLat() >= Math.min(p1.getLat(), p3.getLat()) && p.getLat() <= Math.max(p1.getLat(), p3.getLat())) {
+                        //p.getLat() lies between p1.getLat() & p3.getLat()
                         ++intersectCount;
                     } else {
                         intersectCount += 2;
                     }
                 }
             }
-            p1 = p2;//next ray left point
+            //next ray left point
+            p1 = p2;
         }
 
-        if (intersectCount % 2 == 0) {//偶数在多边形外
+        if (intersectCount % 2 == 0) {
+            //偶数在多边形外
             return false;
-        } else { //奇数在多边形内
+        } else {
+            //奇数在多边形内
             return true;
         }
     }
