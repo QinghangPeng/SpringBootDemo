@@ -1,6 +1,7 @@
 package com.example.demo.model.strategy_pattern;
 
 import com.example.demo.vo.OrderDTO;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
  * @Date 2019/5/22 11:09
  * @Version 1.0
  **/
+@Repository
 public interface IOrderService {
 
     /**

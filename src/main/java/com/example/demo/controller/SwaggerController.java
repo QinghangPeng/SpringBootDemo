@@ -15,6 +15,7 @@ import com.example.demo.vo.OrderDTO;
 import com.example.demo.vo.Vehicle;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -39,7 +40,8 @@ public class SwaggerController {
     private MongoService mongoService;
 
     @Autowired
-    private OrderServiceImpl orderService;
+    @Qualifier("orderServiceImpl")
+    private IOrderService orderService;
 
     @ApiOperation(value = "sayHello")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
@@ -119,7 +121,7 @@ public class SwaggerController {
         return Response.success(mongoService.basicMongoInfo(pageSize));
     }
 
-    @ApiOperation(value = "测试策略模式")
+    @ApiOperation(value = "测试策略模式：消除冗杂的if else")
     @RequestMapping(value = "/testStrategy",method = RequestMethod.POST)
     public Response testStrategy(@RequestBody OrderDTO dto) {
         return Response.success(orderService.handle(dto));
