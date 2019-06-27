@@ -63,6 +63,13 @@ public class SwaggerController {
         return Response.success(mysqlService.getTriggerName(triggerGroup));
     }
 
+    @ApiOperation(value = "mysqlStorage")
+    @RequestMapping(value = "/mysqlStorage", method = RequestMethod.GET)
+    public Response mysqlStorage(@ApiParam("类型：1,调用第一个存储过程;2,调用第二个存储过程") @RequestParam(value = "type") Integer type,
+                                 @ApiParam("组id") @RequestParam(value = "rootId") Integer rootId) {
+        return Response.success(mysqlService.getDataFromStorage(type,rootId));
+    }
+
     @ApiOperation(value = "kafka")
     @RequestMapping(value = "/basicKafkaInfo/{topic}", method = RequestMethod.POST)
     public Response testKafka(@RequestBody Vehicle vehicle, @PathVariable String topic) throws Exception{
