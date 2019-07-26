@@ -1,5 +1,7 @@
 #SpringBoot-For-Recorded-History
 
+[![Build Status](https://travis-ci.org/QinghangPeng/SpringBootDemo.svg?branch=master)](https://travis-ci.org/QinghangPeng/SpringBootDemo)
+
 **Micro service Architecture**
 
 - 基于springBoot 2.x版本
