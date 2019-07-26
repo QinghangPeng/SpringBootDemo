@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk8
+branches:
+  only:
+    - master
+
+notifications:
+  email: voyagejk.peng@gmail.com
+on_success: never
+on_failure: always
