@@ -1,6 +1,8 @@
 #SpringBoot-For-Recorded-History
 
+[![Version](https://img.shields.io/badge/Version-1.0.1-0065FF.svg)](#)
 [![Build Status](https://travis-ci.org/QinghangPeng/SpringBootDemo.svg?branch=master)](https://travis-ci.org/QinghangPeng/SpringBootDemo)
+[![license: MIT](https://img.shields.io/badge/license-MIT-FF5630.svg)](https://opensource.org/licenses/MIT)
 
 **Micro service Architecture**
 
@@ -38,6 +40,12 @@ SpringBootDemo
       ├── GeoUtil  -- 判断进出区
       ├── GPSUtil  -- 坐标系之间的相互转换
 ```
+
+## License
+
+MIT License
+
+Copyright (c) 2019 QingHang Peng
 
 
 
