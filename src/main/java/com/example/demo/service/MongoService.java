@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.dao.MongoDao;
 import com.example.demo.dao.MysqlDao;
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.mongoVo.IndexReq;
+import com.example.demo.vo.mongoVo.Weather;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +35,13 @@ public class MongoService {
         List<Vehicle> list = mongoDao.getVinInfo(vins);
         log.info("执行完成:{}",(System.currentTimeMillis() - start)/1000);
         return list;
+    }
+
+    public void createColWithIndex(IndexReq indexReq) {
+        mongoDao.createColWithIndex(indexReq.getColName(),indexReq.getList());
+    }
+
+    public void createColWithObje(Weather weather) {
+        mongoDao.createColWithObje(weather);
     }
 }

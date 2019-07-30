@@ -122,12 +122,6 @@ public class SwaggerController {
                 .finish();
     }
 
-    @ApiOperation(value = "mongo")
-    @RequestMapping(value = "/basicMongoInfo", method = RequestMethod.GET)
-    public Response basicMongoInfo(@ApiParam("查询车辆数") @RequestParam Integer pageSize) {
-        return Response.success(mongoService.basicMongoInfo(pageSize));
-    }
-
     @ApiOperation(value = "测试策略模式：消除冗杂的if else")
     @RequestMapping(value = "/testStrategy",method = RequestMethod.POST)
     public Response testStrategy(@RequestBody OrderDTO dto) {
