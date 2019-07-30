@@ -1,10 +1,12 @@
 package com.example.demo.dao;
 
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.mongoVo.Weather;
 import com.mongodb.*;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.index.CompoundIndexDefinition;
+import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -30,6 +34,7 @@ import java.util.function.Consumer;
  * @Version 1.0
  **/
 @Repository
+@Slf4j
 public class MongoDao {
 
     @Autowired
@@ -59,7 +64,7 @@ public class MongoDao {
 //            list.add(mongoTemplate.getConverter().read(Vehicle.class,document));
             list.add(document);
         }
-        System.out.println("================================"+list.size());
+        log.info("================================:{}",list.size());
         return null;
     }
 
@@ -182,6 +187,49 @@ public class MongoDao {
 //           Xx xx = mongoTemplate.getConverter().read(Xx.class,document);
         });
         return list;
+    }
+
+    /**
+     *  创建带索引的表
+     * @param colName
+     * @param strs 这里可以根据需求创建单索引，单个复合索引，多个复合索引，缺乏:创建多个单索引
+     */
+    public void createColWithIndex(String colName,List<String[]> strs) {
+        if (!mongoTemplate.collectionExists(colName)) {
+            for (String[] str : strs) {
+                Index index = ensureIndex(str);
+                mongoTemplate.indexOps(colName).ensureIndex(index);
+            }
+        }
+    }
+
+    /**
+     *  创建索引
+     * @param fieldName
+     * @return
+     */
+    private Index ensureIndex(String... fieldName) {
+        Index index = null;
+        if (fieldName.length == 1) {
+            /**
+             *  单字段单索引
+             */
+            index = new Index(fieldName[0],Sort.Direction.ASC);
+        } else {
+            /**
+             *  复合索引
+             */
+            Document document = new Document();
+            for (String s : fieldName) {
+                document.put(s,1);
+            }
+            index = new CompoundIndexDefinition(document);
+        }
+        return index;
+    }
+
+    public void createColWithObje(Weather weather) {
+        mongoTemplate.createCollection(Weather.class);
     }
 
     /**
