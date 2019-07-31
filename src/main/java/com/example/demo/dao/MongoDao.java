@@ -229,7 +229,10 @@ public class MongoDao {
     }
 
     public void createColWithObje(Weather weather) {
-        mongoTemplate.createCollection(Weather.class);
+        if (!mongoTemplate.collectionExists("weather")) {
+            mongoTemplate.createCollection(Weather.class);
+        }
+        mongoTemplate.insert(weather);
     }
 
     /**
