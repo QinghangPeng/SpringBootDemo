@@ -31,6 +31,7 @@ SpringBootDemo
       ├── AsynchronousController  -- 异步请求相关接口
       ├── CacheController  -- springboot整合cache的相关接口
       ├── SwaggerController  -- 各种数据库连接、kafka、excel导出等接口
+      ├── MongoController  -- mongo相关接口
 ├── model
       ├── Flyweight_Pattern  -- 享元模式
       ├── decorator_pattern  -- 装饰模式
