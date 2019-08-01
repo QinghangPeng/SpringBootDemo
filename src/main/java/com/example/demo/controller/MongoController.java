@@ -44,4 +44,11 @@ public class MongoController {
         service.createColWithObje(weather);
         return Response.success();
     }
+
+    @ApiOperation("新增或更新某条数据")
+    @PostMapping("/saveOrUpdate")
+    public Response saveOrUpdate(@RequestBody Weather weather) {
+        service.saveOrUpdate(weather);
+        return Response.success();
+    }
 }

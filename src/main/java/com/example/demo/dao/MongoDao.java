@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexDefinition;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -233,6 +234,31 @@ public class MongoDao {
             mongoTemplate.createCollection(Weather.class);
         }
         mongoTemplate.insert(weather);
+    }
+
+    /**
+     *  插入或更新某条数据
+     * @param weather
+     */
+    public void saveOrUpdateCol(Weather weather) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("province").is(weather.getProvince()).and("city").is(weather.getCity()));
+        log.info("query info:{}",query.toString());
+        Update update = buildUpdate(weather);
+        mongoTemplate.upsert(query,update,"weather");
+    }
+
+    private Update buildUpdate(Weather weather) {
+        Update update = Update.update("province",weather.getProvince());
+        update.set("city",weather.getCity());
+        update.set("minTemp",weather.getMinTemp());
+        update.set("maxTemp",weather.getMaxTemp());
+        //这里省略了一个字段（windDesc），测试更新会不会覆盖
+        /**
+         *  省略的字段不会被存到库中
+         *  更新时，某个字段无值，会被null覆盖掉，并非保留原值
+         */
+        return update;
     }
 
     /**
