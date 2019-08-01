@@ -44,4 +44,8 @@ public class MongoService {
     public void createColWithObje(Weather weather) {
         mongoDao.createColWithObje(weather);
     }
+
+    public void saveOrUpdate(Weather weather) {
+        mongoDao.saveOrUpdateCol(weather);
+    }
 }
