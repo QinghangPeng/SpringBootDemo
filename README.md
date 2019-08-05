@@ -1,6 +1,5 @@
 ## SpringBoot-For-Recorded-History
 
-[![Total lines](https://tokei.rs/b1/github/QinghangPeng/SpringBootDemo?category=lines)](https://tokei.rs/b1/github/QinghangPeng/SpringBootDemo?category=lines)
 [![Version](https://img.shields.io/badge/Version-1.0.1-0065FF.svg)](#)
 [![Build Status](https://travis-ci.org/QinghangPeng/SpringBootDemo.svg?branch=master)](https://travis-ci.org/QinghangPeng/SpringBootDemo)
 [![license: MIT](https://img.shields.io/badge/license-MIT-FF5630.svg)](https://opensource.org/licenses/MIT)
