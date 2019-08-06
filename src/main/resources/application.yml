@@ -5,6 +5,9 @@ spring:
     active: dev
 server:
   port: ${server-port:9001}
+  compression:
+    enabled: true
+    mime-types: textml,text/xml,text/plain,application/json,application/xml
 #  tomcat:
 #    accesslog:
 #      enabled: true
