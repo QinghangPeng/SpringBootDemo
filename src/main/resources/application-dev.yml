@@ -20,8 +20,6 @@ spring:
   data:
     mongodb:
 #      uri: mongodb://${mongo_username:root}:${mongo_passwd:123456}@${mongo_host:127.0.0.1}:${mongo_port:27001}/${mongo_db:test}?authSource=${auth_db:admin}
-#      uri: mongodb://${mongo_username:rwuser}:${mongo_passwd:JF_xsda_2018}@${mongo_host:10.60.252.4}:${mongo_port:8635}/${mongo_db:faw-sales}?authSource=${auth_db:admin}
-      uri: mongodb://${mongo_username:rwuser}:${mongo_passwd:DDS_tsp_test_jf2019}@${mongo_host:10.0.16.18}:${mongo_port:8635},10.0.16.131:8635,10.0.16.135:8635/${mongo_db:new_report}?authSource=${auth_db:admin}
 #      username: ${mongo_username:rwuser}
 #      password: ${mongo_passwd:JF_xsda_2018}
 #      host: ${mongo_host:localhost}
