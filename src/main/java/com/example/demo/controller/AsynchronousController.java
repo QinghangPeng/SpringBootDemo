@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,14 @@ public class AsynchronousController {
     public Response diffRunAndCall() {
         service.diffFromCallAndRun();
         log.info("=========>" + Thread.currentThread().getName());
+        return Response.success();
+    }
+
+
+    @ApiOperation(value = "自定义线程池")
+    @GetMapping("getThrradPool")
+    public Response getThreadPool() {
+        service.getThreadPool();
         return Response.success();
     }
 
