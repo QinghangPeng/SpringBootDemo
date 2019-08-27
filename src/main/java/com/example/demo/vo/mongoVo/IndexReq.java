@@ -22,34 +22,4 @@ public class IndexReq {
     private String colName;
     private List<IndexConfig> list;
 
-    public static class IndexConfig {
-        private String name;
-        private Map<String,Integer> fields;
-
-        public IndexConfig(Map<String, Integer> fields) {
-            this.fields = fields;
-        }
-
-        public IndexConfig(String name, Map<String, Integer> fields) {
-            this.name = name;
-            this.fields = fields;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Map<String, Integer> getFields() {
-            return fields;
-        }
-
-        public void setFields(Map<String, Integer> fields) {
-            this.fields = fields;
-        }
-    }
-
 }

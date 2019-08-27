@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.MongoDao;
+import com.example.demo.dao.report.MongoDao;
 import com.example.demo.dao.MysqlDao;
 import com.example.demo.vo.Vehicle;
 import com.example.demo.vo.mongoVo.IndexReq;
