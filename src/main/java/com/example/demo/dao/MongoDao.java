@@ -1,12 +1,14 @@
 package com.example.demo.dao;
 
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.mongoVo.IndexReq;
 import com.example.demo.vo.mongoVo.Weather;
 import com.mongodb.*;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -40,6 +39,11 @@ public class MongoDao {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    /**
+     *  缓存创建过的表名，避免频繁调用mongo判断表是否创建
+     */
+    private Set<String> cacheCollection = new HashSet<>();
 
     public static final AggregationOptions OPTIONS = AggregationOptions.builder()
             .outputMode(AggregationOptions.OutputMode.CURSOR)
@@ -193,38 +197,49 @@ public class MongoDao {
     /**
      *  创建带索引的表
      * @param colName
-     * @param strs 这里可以根据需求创建单索引，单个复合索引，多个复合索引，缺乏:创建多个单索引
+     * @param configs 这里可以根据需求创建单索引，单个复合索引，多个复合索引，缺乏:创建多个单索引
      */
-    public void createColWithIndex(String colName,List<String[]> strs) {
+    public void createColWithIndex(String colName,List<IndexReq.IndexConfig> configs) {
+        if (cacheCollection.contains(colName)) {
+            return;
+        }
         if (!mongoTemplate.collectionExists(colName)) {
-            for (String[] str : strs) {
-                Index index = ensureIndex(str);
-                mongoTemplate.indexOps(colName).ensureIndex(index);
-            }
+          for (IndexReq.IndexConfig config : configs) {
+            Index index = ensureIndex(config.getName(),config.getFields());
+            mongoTemplate.indexOps(colName).ensureIndex(index);
+          }
         }
     }
 
     /**
      *  创建索引
-     * @param fieldName
+     * @param indexName
+     * @param fields
      * @return
      */
-    private Index ensureIndex(String... fieldName) {
-        Index index = null;
+    private Index ensureIndex(String indexName,Map<String,Integer> fields) {
+        /*Index index = null;
         if (fieldName.length == 1) {
-            /**
+            *//**
              *  单字段单索引
-             */
+             *//*
             index = new Index(fieldName[0],Sort.Direction.ASC);
         } else {
-            /**
+            *//**
              *  复合索引
-             */
+             *//*
             Document document = new Document();
             for (String s : fieldName) {
                 document.put(s,1);
             }
             index = new CompoundIndexDefinition(document);
+        }
+        return index;*/
+        Document document = new Document();
+        fields.forEach((key, value) -> document.put(key, value));
+        Index index = new CompoundIndexDefinition(document);
+        if (StringUtils.isNoneBlank(indexName)) {
+            index.named(indexName);
         }
         return index;
     }
