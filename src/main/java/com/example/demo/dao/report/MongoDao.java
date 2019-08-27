@@ -219,10 +219,10 @@ public class MongoDao {
           for (IndexConfig config : configs) {
             Index index = ensureIndex(config.getName(),config.getFields());
             mongoTemplate.indexOps(colName).ensureIndex(index);
+          }
             //创建sharding分片
             //TODO 这里在创建分片时，应该判断当前数据库是否为sharding模式
             adminMongoDao.createShard(colName);
-          }
             cacheCollection.add(colName);
             index ++;
         }
