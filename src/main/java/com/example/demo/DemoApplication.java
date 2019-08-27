@@ -1,9 +1,12 @@
 package com.example.demo;
 
+import com.example.demo.config.DynamicProperties;
+import com.example.demo.config.RestConfig;
 import com.google.common.base.Predicates;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EnableScheduling
 @ComponentScan
 @MapperScan(basePackageClasses = DemoApplication.class)
+@EnableConfigurationProperties({RestConfig.class,DynamicProperties.class})
 //@EnableCaching
 public class DemoApplication {
 

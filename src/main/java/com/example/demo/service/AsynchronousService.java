@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.PoolProvider;
 import com.example.demo.vo.Vehicle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
@@ -27,6 +30,19 @@ public class AsynchronousService {
     @Autowired
     @Qualifier("demoTask")
     private ThreadPoolTaskExecutor taskExecutor;
+
+    @Autowired
+    private PoolProvider poolProvider;
+
+    /**
+     * 获取一个指定名字的线程池
+     */
+    private ExecutorService pool;
+
+    @PostConstruct
+    public void init() {
+        this.pool = poolProvider.getPool("batch");
+    }
 
     @Async
     public String testAsynch() {
@@ -110,6 +126,12 @@ public class AsynchronousService {
             log.info("vehicle info:{}",v.toString());
         } catch(Exception e) {
             log.error("callable error:{}",e);
+        }
+    }
+
+    public void getThreadPool() {
+        for (int i = 0; i < 10; i++) {
+            pool.submit(() -> log.info("利用线程池创建自定义名字的线程:{}",Thread.currentThread().getName()));
         }
     }
 }
