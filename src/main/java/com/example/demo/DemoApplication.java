@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.config.CustomizeConfig;
 import com.example.demo.config.DynamicProperties;
 import com.example.demo.config.RestConfig;
 import com.google.common.base.Predicates;
@@ -20,9 +21,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan
 @MapperScan(basePackageClasses = DemoApplication.class)
-@EnableConfigurationProperties({RestConfig.class,DynamicProperties.class})
+@EnableConfigurationProperties({RestConfig.class,DynamicProperties.class, CustomizeConfig.class})
 //@EnableCaching
 public class DemoApplication {
 

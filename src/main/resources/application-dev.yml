@@ -62,6 +62,8 @@ tpd:
   kafkaConsumers:
     testGroupId: consumer3
 
+customize:
+  ifShard: false
 
 
 logging:

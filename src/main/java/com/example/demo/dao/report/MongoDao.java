@@ -1,5 +1,6 @@
 package com.example.demo.dao.report;
 
+import com.example.demo.config.CustomizeConfig;
 import com.example.demo.dao.admin.AdminMongoDao;
 import com.example.demo.vo.Vehicle;
 import com.example.demo.vo.mongoVo.IndexConfig;
@@ -46,6 +47,9 @@ public class MongoDao {
 
     @Autowired
     private AdminMongoDao adminMongoDao;
+
+    @Autowired
+    private CustomizeConfig customizeConfig;
 
     /**
      *  缓存创建过的表名，避免频繁调用mongo判断表是否创建
@@ -221,8 +225,9 @@ public class MongoDao {
             mongoTemplate.indexOps(colName).ensureIndex(index);
           }
             //创建sharding分片
-            //TODO 这里在创建分片时，应该判断当前数据库是否为sharding模式
-            adminMongoDao.createShard(colName);
+            if (customizeConfig.getIfShard().equals("true")) {
+                adminMongoDao.createShard(colName);
+            }
             cacheCollection.add(colName);
             index ++;
         }
