@@ -1,6 +1,9 @@
-package com.example.demo.dao;
+package com.example.demo.dao.report;
 
+import com.example.demo.config.CustomizeConfig;
+import com.example.demo.dao.admin.AdminMongoDao;
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.mongoVo.IndexConfig;
 import com.example.demo.vo.mongoVo.IndexReq;
 import com.example.demo.vo.mongoVo.Weather;
 import com.mongodb.*;
@@ -12,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -37,13 +41,25 @@ import java.util.function.Consumer;
 @Slf4j
 public class MongoDao {
 
+    @Qualifier("reportMongoTemplate")
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private AdminMongoDao adminMongoDao;
+
+    @Autowired
+    private CustomizeConfig customizeConfig;
 
     /**
      *  缓存创建过的表名，避免频繁调用mongo判断表是否创建
      */
     private Set<String> cacheCollection = new HashSet<>();
+
+    /**
+     *  定期清除缓存计数
+     */
+    private int index = 0;
 
     public static final AggregationOptions OPTIONS = AggregationOptions.builder()
             .outputMode(AggregationOptions.OutputMode.CURSOR)
@@ -199,15 +215,25 @@ public class MongoDao {
      * @param colName
      * @param configs 这里可以根据需求创建单索引，单个复合索引，多个复合索引，缺乏:创建多个单索引
      */
-    public void createColWithIndex(String colName,List<IndexReq.IndexConfig> configs) {
+    public void createColWithIndex(String colName,List<IndexConfig> configs) {
         if (cacheCollection.contains(colName)) {
             return;
         }
         if (!mongoTemplate.collectionExists(colName)) {
-          for (IndexReq.IndexConfig config : configs) {
+          for (IndexConfig config : configs) {
             Index index = ensureIndex(config.getName(),config.getFields());
             mongoTemplate.indexOps(colName).ensureIndex(index);
           }
+            //创建sharding分片
+            if (customizeConfig.getIfShard().equals("true")) {
+                adminMongoDao.createShard(colName);
+            }
+            cacheCollection.add(colName);
+            index ++;
+        }
+        if (index > 10000) {
+            index = 0;
+            cacheCollection = new HashSet<>();
         }
     }
 

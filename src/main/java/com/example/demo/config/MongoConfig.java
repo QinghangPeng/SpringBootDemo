@@ -10,11 +10,13 @@ import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 /**
+ *  单数据源配置不存_class到mongo库
  */
-@Configuration
+//@Configuration
+@Deprecated
 public class MongoConfig {
 
-    @Bean
+    /*@Bean
     public MappingMongoConverter mappingMongoConverter(MongoDbFactory factory, MongoMappingContext context, BeanFactory beanFactory) {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
         MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, context);
@@ -25,6 +27,6 @@ public class MongoConfig {
         // Don't save _class to mongo
         mappingConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return mappingConverter;
-    }
+    }*/
 
 }

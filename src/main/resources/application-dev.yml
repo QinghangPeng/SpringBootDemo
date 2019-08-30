@@ -16,16 +16,22 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
-# mongo的配置
-  data:
-    mongodb:
-#      uri: mongodb://${mongo_username:root}:${mongo_passwd:123456}@${mongo_host:127.0.0.1}:${mongo_port:27001}/${mongo_db:test}?authSource=${auth_db:admin}
+# mongo单数据源的配置
+#  data:
+#    mongodb:
+##      uri: mongodb://${mongo_username:root}:${mongo_passwd:123456}@${mongo_host:127.0.0.1}:${mongo_port:27001}/${mongo_db:test}?authSource=${auth_db:admin}
 #      username: ${mongo_username:rwuser}
 #      password: ${mongo_passwd:JF_xsda_2018}
 #      host: ${mongo_host:localhost}
 #      port: ${mongo_port:8635}
 #      database: ${mongo_db:faw-sales}
 #      authentication-database: ${auth_db:admin}
+  data:
+    mongodb:
+      admindb:
+        uri: mongodb://root:123@172.16.48.58:8635,172.16.48.80:8635/admin?authSource=admin
+      reportdb:
+        uri: mongodb://root:123@172.16.48.58:8635,172.16.48.80:8635/new_report?authSource=admin
 
 # redis的配置
   redis:
@@ -56,6 +62,8 @@ tpd:
   kafkaConsumers:
     testGroupId: consumer3
 
+customize:
+  ifShard: false
 
 
 logging:
