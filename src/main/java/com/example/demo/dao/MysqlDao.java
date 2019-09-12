@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.vo.Location;
 import com.example.demo.vo.OrgRelation;
 import com.example.demo.vo.Qrtzlocks;
 import org.apache.ibatis.annotations.*;
@@ -40,4 +41,6 @@ public interface MysqlDao {
     })
     List<OrgRelation> getLevel42Child(@Param("rootId") int rootId);
 
+    void updateDealer(@Param("code") String code, @Param("addr") String addr,@Param("bdlongtitude") Double bdlongtitude,
+                      @Param("bdlaititude") Double bdlaititude);
 }

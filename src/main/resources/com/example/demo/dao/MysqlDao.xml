@@ -24,4 +24,10 @@
         limit #{pageSize}
     </select>
 
+    <update id="updateDealer">
+        update faw_dealer set
+        addr = #{addr},bdlongtitude = #{bdlongtitude},bdlaititude = #{bdlaititude}
+        where code = #{code}
+    </update>
+
 </mapper>

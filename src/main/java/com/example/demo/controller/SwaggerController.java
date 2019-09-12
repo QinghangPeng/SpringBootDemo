@@ -128,4 +128,11 @@ public class SwaggerController {
         return Response.success(orderService.handle(dto));
     }
 
+    @ApiOperation(value = "从excel导入数据")
+    @RequestMapping(value = "/insertData",method = RequestMethod.GET)
+    public Response insertData() {
+        mysqlService.insertData();
+        return Response.success();
+    }
+
 }
