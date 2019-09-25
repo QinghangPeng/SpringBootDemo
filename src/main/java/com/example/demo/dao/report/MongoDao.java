@@ -3,6 +3,7 @@ package com.example.demo.dao.report;
 import com.example.demo.config.CustomizeConfig;
 import com.example.demo.dao.admin.AdminMongoDao;
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.domain.SpeedAndRpmStatisticsDTO;
 import com.example.demo.vo.mongoVo.IndexConfig;
 import com.example.demo.vo.mongoVo.IndexReq;
 import com.example.demo.vo.mongoVo.Weather;
@@ -300,6 +301,16 @@ public class MongoDao {
          *  更新时，某个字段无值，会被null覆盖掉，并非保留原值
          */
         return update;
+    }
+
+    public List<SpeedAndRpmStatisticsDTO> getVehStatusInfoByTime(String time,String end) {
+        Criteria criteria = Criteria.where("tboxTime").gte(time).lt(end);
+        Sort sort = new Sort(Sort.Direction.ASC,"tboxTime");
+        Query query = new Query();
+        query.addCriteria(criteria);
+        query.with(sort);
+        List<SpeedAndRpmStatisticsDTO> list = mongoTemplate.find(query,SpeedAndRpmStatisticsDTO.class,"speed_and_rpm");
+        return list;
     }
 
     /**

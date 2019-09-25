@@ -51,4 +51,11 @@ public class MongoController {
         service.saveOrUpdate(weather);
         return Response.success();
     }
+
+    @ApiOperation("查询车辆数据")
+    @GetMapping("getVehStatusInfoByTime")
+    public Response getVehStatusInfoByTime(@ApiParam("开始时间") @RequestParam(value = "startTime") Long startTime,
+                                           @ApiParam("结束时间") @RequestParam(value = "endTime") Long endTime) {
+        return Response.success(service.getVehStatusInfoByTime(startTime,endTime));
+    }
 }

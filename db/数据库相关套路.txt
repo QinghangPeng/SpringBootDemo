@@ -1,0 +1,128 @@
+去重: DISTINCT
+
+模糊查询: like CONCAT('%',#{deviceNo},'%')
+
+判断是否为null: <if test="vehicleStatus != null">
+                  and status = #{vehicleStatus}
+                </if>
+
+循环list: 某列 in <foreach collection="plateNumber" item="plate" open="(" separator="," close=")">
+                   #{plate}
+                  </foreach>	
+
+insert存一个list:  <insert id="saveContentDetail" parameterType="com.ne.business.yqjf.fms.monitor.vo.maintenanceVo.BoardMainContent">
+                      insert into fms_content_detail_history (content_history_id,main_project,parts_name,parts_brand,parts_model,
+                         parts_num,unit,unit_price,material_cost,time_fee) values
+					  <foreach collection="contents" item="content" separator=",">
+						(#{contentHistoryId},#{content.mainObject},#{content.partsName},#{content.partsBrand},#{content.partsModel},
+						#{content.partsNum},#{content.unit},#{content.unitPrice},#{content.materialCost},#{content.timeFee})
+					  </foreach>
+                   </insert>
+
+insert之后返回id:   <insert id="saveContentHistory" parameterType="com.ne.business.yqjf.fms.monitor.vo.maintenanceVo.BoardMainContent">
+						<selectKey keyProperty="contentHistoryId" order="AFTER" resultType="java.lang.Long">
+							SELECT LAST_INSERT_ID()
+						</selectKey>
+						insert into fms_content_history (bound_vehicle_maintype_id,driver_name,driver_phone,repair_name,pro_description,
+						  total_material_cost,total_time_fee,total_fee) values
+						(#{boundVehicleMainTypeId},#{driverName},#{driverPhone},#{repairName},#{proDescription},
+						#{totalMaterialCost},#{totalTimeFee},#{totalFee})
+					</insert>
+					
+insert判空:  <insert id="create" parameterType="com.ne.business.ictfms.po.VehiclePO">
+			  insert into TMS_VEHICLE
+			  <trim prefix="(" suffix=")" suffixOverrides=",">
+				  license_plate,
+				  <if test="deviceNumber != null">
+					  device_number,
+				  </if>
+				  <if test="status != null">
+					  staus,
+				  </if>
+				  <if test="driverName != null">
+					  driver_name,
+				  </if>
+				  <if test="vin != null">
+					  vin,
+				  </if>
+				  <if test="password != null">
+					  password,
+				  </if>
+			  </trim>
+			  <trim prefix="values (" suffix=")" suffixOverrides=",">
+				  #{licensePlate}
+				  <if test="deviceNumber != null">
+					  #{deviceNumber},
+				  </if>
+				  <if test="status != null">
+					  #{status},
+				  </if>
+				  <if test="driverName != null">
+					  #{driverName},
+				  </if>
+				  <if test="vin != null">
+					  #{vin},
+				  </if>
+				  <if test="password != null">
+					  #{password},
+				  </if>
+			  </trim>
+			</insert>					
+
+update判空:  <update id="updatePlanInfoByPlanInfoId" parameterType="com.ne.business.yqjf.fms.monitor.vo.maintenanceVo.MaintenanceRule">
+				  update fms_main_plan_info
+				  <set>
+					  <if test="mainType != null">
+						  main_type = #{mainType},
+					  </if>
+					  <if test="ifOpenOrNot != null">
+						  is_open_or_not = #{ifOpenOrNot},
+					  </if>
+					  <if test="maturityRule != null">
+						  maturity_rule = #{maturityRule},
+					  </if>
+					  <if test="dueMileage != null">
+						  due_mileage = #{dueMileage},
+					  </if>
+					  <if test="warnMileage != null">
+						  warn_mileage = #{warnMileage},
+					  </if>
+					  <if test="dueMonth != null">
+						  due_month = #{dueMonth},
+					  </if>
+					  <if test="warnDays != null">
+						warn_days = #{warnDays}
+					  </if>
+				  </set>
+				  where id = #{id}
+			  </update>	
+
+delete in语句：<delete id="unbindBoundVehicle">   参数为list或者数组
+				  delete from fms_bound_vehicle where id in
+				  <foreach collection="boundVehicleIds" item="boundVehicleId" open="(" separator="," close=")">
+					 #{boundVehicleId}
+				  </foreach>
+			   </delete>			 
+
+mybatis：
+    <![CDATA[ <> ]]>
+			   
+			   
+spring-boot 设置打印sql语句：（可以配合Mybtis-log-plugin）使用：
+在配置文件中配置以下参数，并且在resources文件夹中增加mybatis-config.xml文件
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 打印SQL语句到控制台 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+</configuration>
+
+
+mybatis:
+  config-location: classpath:/mybatis-config.xml
+logging:
+  level:
+    com.nex.yqjf.fms.dao.fms : debug
+    root: info			   

@@ -1,0 +1,78 @@
+1.本地kafka：（端口号9092）
+启动zookeeper：zkserver
+启动kafka：在kafka文件夹下shift+鼠标右键，打开powershell
+输入：.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+2.本地启动consul：
+在git下输入命令：./consul agent -dev
+
+3.本地启动es的连接工具
+grunt server
+
+4.maven gitflow命令
+mvn jgitflow:release-start -X -Djavax.net.ssl.trustStore=$JAVA_HOME/jre/lib/security/cacerts
+mvn jgitflow:release-finish -X
+mvn jgitflow:release-finish -Dmaven.test.skip=true  bulid过程中不跑测试代码
+
+5.maven本地安装包命令
+mvn install:install-file -Dfile=E:\otherFiles\eSDK_Storage_OBS_V3.0.1_Java/libs/esdk-obs-java-3.0.1.jar -DgroupId=com.huawei.storage -DartifactId=esdk-obs-java -Dversion=3.0.1 -Dpackaging=jar -DgeneratePom=true
+
+6.docker打包升级
+	1、Docker  build -t="tomcat-report" .
+	2、在本地测试是否能够访问：docker run -p 8088:8080 tomcat-report
+	3、利用这个命令获取最新的imageId: docker images
+	4、打tag（注意：imageId 以及tagId是需要修改的地方）：docker tag imageId registry.cn-hangzhou.aliyuncs.com/meiauto/web-report:tagId
+	5、将项目发布（tagId是需要修改的地方）：docker push registry.cn-hangzhou.aliyuncs.com/meiauto/web-report:tagId
+
+7.dockerFile里面设置时区：
+	RUN echo -e "https://mirrors.ustc.edu.cn/alpine/latest-stable/main\nhttps://mirrors.ustc.edu.cn/alpine/latest-stable/community" > /etc/apk/repositories
+	ENV  TIME_ZONE Asia/Shanghai
+
+	RUN apk add --no-cache tzdata
+	RUN echo "${TIME_ZONE}" > /etc/timezone
+	RUN ln -sf /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime
+
+8.linux上的一些操作命令
+	Linux环境上发布mongokafka2服务
+	cd /opt/nfs/mongo2kafka_src/mongo2kafka
+	git pull
+	mvn clean package -X
+	cd target/
+	cp mongo2kafka.zip /opt/
+	cd /opt/
+	rm -rf mongo2kafka
+	unzip mongo2kafka.zip
+	cd mongo2kafka/bin
+	./start.sh
+	tail -f batch/logs/run.log
+	查找日志：grep '开始时间' batch/logs/run.log
+	查找操作命令：history | grep curl
+	查找文件夹下的文件：ll | grep batch.jar 
+
+
+	batch的部署
+	本地打包： mvn clean package -X -Pzip 打jar包
+	上传到服务器： rz -E
+	上传之前  先删除  lib下面的batch.jar rm -rf batch.jar
+	寻找是否有这个jar包: ll | grep batch.jar
+
+	设置kafka偏移量：
+	./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group fault_group --topic temp_event_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group event_date_group --topic temp_event_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group instant_group --topic temp_event_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group continue_group --topic temp_event_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group igevent_group --topic temp_event_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group sar_date_gropu --topic temp_sar_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group thopen_date_group --topic temp_thopen_topic --reset-offsets --to-latest --execute\
+	&&./kafka-consumer-groups.sh --bootstrap-server 10.0.16.167:9092,10.0.16.199:9092,10.0.16.227:9092  --group report_original_group --topic report_original_topic --reset-offsets --to-latest --execute
+
+8. 制表位冲突  导致 sh命令无法执行
+:set ff=unix
+
+9.mongo中查看shard的状态
+db.printShardingStatus();
+db.event_data_20190830.getShardDistribution();
+db.report_data_20190830.getShardDistribution();
+db.speed_and_rpm_20190830.getShardDistribution();
+db.throttle_open_20190830.getShardDistribution();
+db.throttle_open_20190830.status().shard;

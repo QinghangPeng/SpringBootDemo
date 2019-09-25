@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dao.report.MongoDao;
 import com.example.demo.dao.MysqlDao;
 import com.example.demo.vo.Vehicle;
+import com.example.demo.vo.domain.SpeedAndRpmStatisticsDTO;
 import com.example.demo.vo.mongoVo.IndexReq;
 import com.example.demo.vo.mongoVo.Weather;
 import lombok.extern.slf4j.Slf4j;
@@ -47,5 +48,12 @@ public class MongoService {
 
     public void saveOrUpdate(Weather weather) {
         mongoDao.saveOrUpdateCol(weather);
+    }
+
+    public List<SpeedAndRpmStatisticsDTO> getVehStatusInfoByTime(Long startTime,Long endTime) {
+        String time = String.valueOf(startTime);
+        String end = String.valueOf(endTime);
+        List<SpeedAndRpmStatisticsDTO> list = mongoDao.getVehStatusInfoByTime(time,end);
+        return list;
     }
 }
