@@ -7,6 +7,7 @@ import org.joda.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @ClassName TimeUtil
@@ -70,5 +71,7 @@ public class TimeUtil {
         System.out.println(daysBetweenTwoDate("2019-07-01","2019-07-01"));
         List<String[]> strings = continuousDateInterval("2019-07-01", daysBetweenTwoDate("2019-07-01", "2019-07-01"), 6, false);
         strings.forEach(e -> System.out.println(e[0] + "-" + e[1]));
+        System.out.println(UUID.randomUUID().toString().replaceAll("-",""));
+        System.out.println("cedf9cfdf219414c9a067337602f4540".length());
     }
 }

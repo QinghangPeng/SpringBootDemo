@@ -50,6 +50,58 @@ SpringBootDemo
 ```
 
 
+### feign文件上传
+如果调用其他服务的上传接口，那么file文件是不能直接通过feign上传的。需要额外配置
+```xml
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>10.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form-spring</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+```
+在feign的client接口调用其他服务的上传接口示例
+```java
+ @FeignClient(
+        name = "nccc-basic-file-manage",
+        configuration = FileUploadClient.MultipartSupportConfig.class
+)
+public interface FileUploadClient {
+
+    /**
+     * 文件上传
+     * @param encryptCode
+     * @param file
+     * @return
+     */
+    @PostMapping(
+            value = "/file_manages/upload/{encryptCode}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    ResponseBody uploadFile(@PathVariable("encryptCode") String encryptCode, @RequestPart("file") MultipartFile file);
+
+    class MultipartSupportConfig {
+        @Autowired
+        private ObjectFactory<HttpMessageConverters> messageConverters;
+        @Bean
+        public Encoder feignFormEncoder () {
+            return new SpringFormEncoder(new SpringEncoder(messageConverters));
+        }
+    }
+
+}
+```
+
+
 ## License
 
 MIT License
