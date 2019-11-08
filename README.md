@@ -42,6 +42,14 @@ SpringBootDemo
       ├── GPSUtil  -- 坐标系之间的相互转换
 ```
 
+### 问题记录
+```lua
+1.导出swagger接口文档时，遭遇版本问题：
+  解决方法：swagger2版本统一2.6.1  导入的包spring-restdocs-mockmvc中去除冲突版本spring-restdocs-core
+            mapstruct引入时，在maven中一定要放在swagger2引入申明的上面
+```
+
+
 ## License
 
 MIT License
