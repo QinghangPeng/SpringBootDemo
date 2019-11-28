@@ -125,4 +125,9 @@ mybatis:
 logging:
   level:
     com.nex.yqjf.fms.dao.fms : debug
-    root: info			   
+    root: info
+
+mybatis中调用函数进行string字段判空：
+<if test="@org.apache.commons.lang.StringUtils@isNotBlank(code)">
+      and code = #{code}
+</if>
